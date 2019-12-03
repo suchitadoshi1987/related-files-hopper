@@ -1,5 +1,5 @@
-# Jump to Related Files
-![Demo](assets/demo.gif)
+# Jump Between Related Files
+
 In the EmberJS world, developers work with a collection of related files. Due to Ember’s enforcement of strict project structure, it is a big pain point for the devs to navigate between related files to the extent where large (and potentially disruptive) changes have been proposed to ember's project layout (pods, module unification).
 
 This extension allows movement within a collection of related files with a single keystroke making development faster and efficient resulting in improving developer’s productivity and happiness.

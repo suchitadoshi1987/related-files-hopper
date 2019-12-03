@@ -1,0 +1,68 @@
+{
+  "name": "ember-jump-between-related-files",
+  "displayName": "ember-jump-between-related-files",
+  "description": "Get easy access to all the related files in your app",
+  "version": "0.0.1",
+  "publisher": "suchitadoshi1987",
+  "engines": {
+    "vscode": "^1.40.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suchitadoshi1987/ember-jump-between-related-files.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:jumpBetweenRelatedFiles.show"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "jump-between-related-files configuration",
+      "properties": {
+        "jumpBetweenRelatedFiles.patternsToStrip": {
+          "type": "array",
+          "default": [
+            "{EXTENSION}",
+            "/[_\\.]?-[tT]est$/"
+          ],
+          "description": "Regular expressions or strings to remove from the path"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "jumpBetweenRelatedFiles.show",
+        "title": "Quick Open Related Files"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "jumpBetweenRelatedFiles.show",
+        "key": "ctrl+/",
+        "mac": "cmd+shift+.",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.40.0",
+    "eslint": "^6.6.0",
+    "glob": "^7.1.5",
+    "mocha": "^6.2.2",
+    "typescript": "^3.6.4",
+    "vscode-test": "^1.2.2"
+  },
+  "dependencies": {
+    "fast-glob": "^3.1.1"
+  }
+}
