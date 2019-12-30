@@ -22,11 +22,5 @@ suite("Helper Test Suite", () => {
     assert.equal(helper.removePrefixSlash("/app/foo/bar"), "app/foo/bar");
     assert.equal(helper.removePrefixSlash("app/foo/bar"), "app/foo/bar");
     assert.equal(helper.removePrefixSlash(), undefined);
-	});
-	
-	test("removePrefixSlash", () => {
-    assert.equal(helper.removePrefixSlash("/app/foo/bar"), "app/foo/bar");
-    assert.equal(helper.removePrefixSlash("app/foo/bar"), "app/foo/bar");
-    assert.equal(helper.removePrefixSlash(), undefined);
   });
 });
