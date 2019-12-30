@@ -2,7 +2,7 @@
 [![](https://vsmarketplacebadge.apphb.com/version-short/suchitadoshi1987.file-hopper.svg)](https://marketplace.visualstudio.com/items?itemName=suchitadoshi1987.file-hopper)
 [![dependencies Status](https://david-dm.org/suchitadoshi1987/related-files-hopper/status.svg)](https://david-dm.org/suchitadoshi1987/related-files-hopper)
 [![devDependencies Status](https://david-dm.org/suchitadoshi1987/related-files-hopper/dev-status.svg)](https://david-dm.org/suchitadoshi1987/related-files-hopper?type=dev)
-# File Hopper
+# Related Files Hopper
 ![Demo](https://raw.githubusercontent.com/suchitadoshi1987/ember-jump-between-related-files/master/assets/demo.gif)
 
 On a typical day, a developer touches multiple files while working on a feature/project. It is very common to switch between files whilst working on the feature. For a given file, there would be cases where the developer needs to find its related files,  for instance - for a given component - `components/foo.js`, he/she would like to see its related template - `templates/foo.hbs` and may be its related tests `unit/foo-test.js`, `acceptance/foo-test.js` etc. in such cases, 
