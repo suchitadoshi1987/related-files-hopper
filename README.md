@@ -28,3 +28,17 @@ This extension allows movement within a collection of related files with a singl
 
 Use `Cmd+Shift+.` to get the list of all the related files in regards to your current file.
 
+### Customizations
+
+| Name               | Description                                                                        | Structure                                                                                 |
+|--------------------|------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| labelRuleSets      | Custom rule set to generate labels based on folder name and regex strings          | <pre lang="json" style="width: 400px">{<br>  "folderName": "styles",<br>  "title": "Style",<br>  "regexPatterns": ["(/.*)?/(.+).(css\|scss)"]<br>}</pre> 
+|
+| appRootFolders     | Array of the root folders of the app                                               | array of strings                                                                          |
+| appSubRootFolders  | Array of any sub root folders of the app (app within app support)                  | array of strings                                                                          |
+| appSubFolders      | Array of directories in the app eg: ['components', 'templates', 'styles']          | array of strings                                                                          |
+| testRootFolders    | Array of the root folders of the tests in the app                                  | array of strings                                                                          |
+| testSubRootFolders | Array of any sub root folders of tests in the app (app within app support)         | array of strings                                                                          |
+| testSubFolders     | Array of directories of tests in the app eg: ['unit', 'acceptance', 'integration'] | array of strings                                                                          |
+| patternsToStrip    | Regular expressions or strings to remove from the path                             | array of strings                                                                          |
+

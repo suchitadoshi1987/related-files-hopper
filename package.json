@@ -2,7 +2,7 @@
   "name": "related-files-hopper",
   "displayName": "Related Files Hopper",
   "description": "Get easy access to all the related files in your app",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "preview": true,
   "publisher": "suchitadoshi1987",
   "license": "MIT",
@@ -55,7 +55,7 @@
                 "type": "string",
                 "description": "Specifies the label title."
               },
-              "regexPattern": {
+              "regexPatterns": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -87,6 +87,11 @@
             "templates",
             "components",
             "models",
+            "styles",
+            "helpers",
+            "initializers",
+            "instance-initializers",
+            "mixins",
             "utils",
             "serializers",
             "adapters"
@@ -104,7 +109,7 @@
             "tests"
           ]
         },
-        "fileHopper.testsSubFolders": {
+        "fileHopper.testSubFolders": {
           "type": "array",
           "default": [
             "acceptance",
@@ -152,6 +157,7 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "fast-glob": "^3.1.1"
+    "fast-glob": "^3.1.1",
+    "pluralize": "^8.0.0"
   }
 }
