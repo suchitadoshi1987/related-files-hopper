@@ -1,8 +1,26 @@
 const path = require("path");
 const vscode = require("vscode");
-
 const fg = require("fast-glob");
-const { Uri, workspace, window } = vscode;
+const {
+  removePrefixSlash,
+  getChildSubDir,
+  getPrefixNameFromSpecialChars,
+  getPipedRegexString,
+  generateQuickPickItem,
+  getConfig
+} = require("./utils/helper");
+const { workspace, window } = vscode;
+const {
+  appRootFolders,
+  appSubRootFolders,
+  appSubFolders,
+  testsSubFolders,
+  testSubRootFolders,
+  testRootFolders
+} = getConfig();
+
+const appSubFolderRegexString = getPipedRegexString(appSubFolders);
+const testSubFolderRegexString = getPipedRegexString(testsSubFolders);
 
 function open(item) {
   workspace
@@ -60,82 +78,6 @@ function buildPrefix(currentFilename, workspaceFolder, separator, config) {
   return currentFilename;
 }
 
-function determineLabelType(fileName, appName) {
-  const test = new RegExp(
-    `${appName}(\/(?:.+))?\/(integration|acceptance|unit)?(\/(.*))?\/(.+)-test\.(js|ts)`
-  );
-
-  const components = new RegExp(`${appName}(\/.*)?\/components\/(.+).(js|ts)`);
-  const routes = new RegExp(`${appName}(\/.*)?\/routes\/(.+).(js|ts)`);
-  const mixins = new RegExp(`${appName}(\/.*)?\/mixins\/(.+).(js|ts)`);
-  const utils = new RegExp(`${appName}(\/.*)?\/utils\/(.+).(js|ts)`);
-  const services = new RegExp(`${appName}(\/.*)?\/services\/(.+).(js|ts)`);
-  const helpers = new RegExp(`${appName}(\/.*)?\/helpers\/(.+).(js|ts)`);
-  const initializers = new RegExp(
-    `${appName}(\/.*)?\/initializers\/(.+).(js|ts)`
-  );
-  const controllers = new RegExp(
-    `${appName}(\/.*)?\/controllers\/(.+).(js|ts)`
-  );
-  const templates = new RegExp(`${appName}(\/.*)?\/(.+).(hbs)`);
-  const templates1 = new RegExp(
-    `${appName}(\/.*)?\/templates\/(.+).(js|ts|hbs)`
-  );
-
-  const styles = new RegExp(`${appName}(\/.*)?\/(.+).(css|scss)`);
-
-  if (fileName.match(test)) {
-    const matchedTest = fileName.match(test)[2];
-    return `${matchedTest.replace(/\w/, c => c.toUpperCase())} Test:`;
-  }
-  if (fileName.match(templates) || fileName.match(templates1)) {
-    return "Template:";
-  }
-  if (fileName.match(styles)) {
-    return "Style:";
-  }
-  if (fileName.match(components)) {
-    return "Component:";
-  }
-  if (fileName.match(routes)) {
-    return "Route:";
-  }
-  if (fileName.match(controllers)) {
-    return "Controller:";
-  }
-  if (fileName.match(services)) {
-    return "Service:";
-  }
-  if (fileName.match(mixins)) {
-    return "Mixin:";
-  }
-  if (fileName.match(initializers)) {
-    return "Initializer:";
-  }
-  if (fileName.match(helpers)) {
-    return "Helper:";
-  }
-  if (fileName.match(utils)) {
-    return "Util:";
-  }
-  return "";
-}
-
-function getPathPrefix(item) {
-  const relativePathText = vscode.workspace.asRelativePath(item);
-  let pathPrefix = relativePathText.split("/")[0];
-  const appName1 = new RegExp("(.*)/(addon|app|tests)/(.*)");
-  const appNameMatch = relativePathText.match(appName1);
-  if (appNameMatch) {
-    pathPrefix = relativePathText.match(appName1)[1];
-  }
-  return pathPrefix;
-}
-
-function getRootLevelPrefix(pathPrefix) {
-  return pathPrefix === "app" || pathPrefix === "tests" ? "(app|tests)" : null;
-}
-
 function showRelated() {
   const document =
     vscode.window.activeTextEditor && vscode.window.activeTextEditor.document;
@@ -148,7 +90,7 @@ function showRelated() {
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
     maybeWorkspaceFolder = workspaceFolder ? workspaceFolder.uri.path : "";
     const separator = path.sep;
-    const config = vscode.workspace.getConfiguration("jumpBetweenRelatedFiles");
+    const config = vscode.workspace.getConfiguration("fileHopper");
 
     prefix = buildPrefix(
       currentFilename,
@@ -160,53 +102,90 @@ function showRelated() {
     prefix = "";
   }
 
-  let pathPrefix = getPathPrefix(currentFilename);
+  let pathPrefix = vscode.workspace.asRelativePath(
+    path.dirname(currentFilename)
+  );
+
   let entries = [currentFilename];
 
   const toMs = ([sec, nano]) => sec * 1000 + nano / 1000000;
   const start = process.hrtime(); // start
 
-  let potentialEngineLibName = "";
+  let potentialParentFolderName = "";
 
-  const pathPrefixRegex = new RegExp("(.*)/(addon|app|tests)/(.*)");
-  const appPrefixNameMatch = vscode.workspace
-    .asRelativePath(currentFilename)
-    .match(pathPrefixRegex);
+  // Construct the regex for app sub directories
+  const appSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
+    appSubRootFolders
+  )}(\/.*)?\/${appSubFolderRegexString}(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss)`;
+  const appTestSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(testSubRootFolders)}(\/.*)?\/${testSubFolderRegexString}(\/${appSubFolderRegexString})?(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss)`;
 
-  if (appPrefixNameMatch) {
-    pathPrefix = appPrefixNameMatch[1];
+  let parentSubDir;
+  let appPrefixNameMatch1 = currentFilename.match(appSubDirRegex);
+  let appPrefixNameMatch2 = currentFilename.match(appTestSubDirRegex);
 
-    // this is to match .scss files for patterns where css file names
-    // are prefixed with either `_` or `_<engine-name>`
-    const potentialEngineLibNameSplit = pathPrefix.split("/");
-    potentialEngineLibName =
-      potentialEngineLibNameSplit[potentialEngineLibNameSplit.length - 1];
+  let childSubDir =
+    getChildSubDir(appPrefixNameMatch1, appPrefixNameMatch2) ||
+    `(${appSubFolderRegexString}|${testSubFolderRegexString})`;
 
-    const prefixRegex = new RegExp(`(_)?(${potentialEngineLibName}-)?(.*)`);
-    const prefixRegexMatch = prefix.match(prefixRegex);
-    if (prefixRegexMatch) {
-      prefix = prefixRegexMatch[3];
-    }
+  let folderRegexMatch = appPrefixNameMatch1 || appPrefixNameMatch2;
+  if (folderRegexMatch) {
+    parentSubDir = removePrefixSlash(folderRegexMatch[1]);
+    pathPrefix = folderRegexMatch[2];
+  }
 
-    // There might be cases where there are multiple Ember projects within a single app.
+  // This is for the sub directories in the app like app within addons etc.
+  if (parentSubDir && parentSubDir.split("/").length > 1) {
+    pathPrefix = parentSubDir;
+  } else {
+    let potentialPrefix;
+
+    // There might be cases where there are multiple projects within a single app.
     // We need to make sure that the pathPrefix is only the top level project and not an
     // engine/addon inside of the app.
-    const potentialPrefix = getRootLevelPrefix(appPrefixNameMatch[2]);
-    if (pathPrefix.split("/").length === 1 && potentialPrefix) {
-      pathPrefix = path.join(pathPrefix, potentialPrefix);
+    if (folderRegexMatch) {
+      const rootLevelFolders = [...new Set([].concat(appRootFolders, testRootFolders))];
+      const rootLevelPrefixRegexString = rootLevelFolders.includes(
+        folderRegexMatch[2]
+      )
+        ? getPipedRegexString(rootLevelFolders)
+        : null;
+      potentialPrefix = rootLevelPrefixRegexString;
+      if (parentSubDir && parentSubDir.split("/").length === 1) {
+        potentialPrefix = path.join(parentSubDir, rootLevelPrefixRegexString);
+      }
     }
-  } else {
-    const potentialPrefix = getRootLevelPrefix(pathPrefix);
     pathPrefix = potentialPrefix
       ? potentialPrefix
       : vscode.workspace.asRelativePath(path.dirname(currentFilename));
+
+    const prefixRegex = new RegExp(`(_)?(.*)`);
+    const prefixRegexMatch = prefix.match(prefixRegex);
+    if (prefixRegexMatch) {
+      prefix = prefixRegexMatch[2];
+    }
   }
+
+  // this is to match .scss files for patterns where css file names
+  // are prefixed with either `_` or `_<folder-name>`
+  const potentialParentFolderNameSplit = pathPrefix.split("/");
+  potentialParentFolderName =
+    potentialParentFolderNameSplit[potentialParentFolderNameSplit.length - 1];
+
+  prefix = getPrefixNameFromSpecialChars(
+    "_",
+    potentialParentFolderName,
+    prefix
+  );
+
+  let globPrefix = childSubDir
+    ? `${maybeWorkspaceFolder}/${pathPrefix}/**/${childSubDir}/`
+    : `${maybeWorkspaceFolder}/${pathPrefix}/**/`;
 
   // run the glob query
   try {
     entries = fg.sync(
       [
-        `${maybeWorkspaceFolder}/${pathPrefix}/**/?(_)?(${potentialEngineLibName}-)${prefix}?(-test).{js,hbs,scss}`
+        `${globPrefix}?(_)?(${potentialParentFolderName}-)${prefix}?(-test).{js,hbs,scss}`
       ],
       { dot: true, ignore: ["**/node_modules"] }
     );
@@ -217,16 +196,7 @@ function showRelated() {
   // move the current file to the top
   entries = [...entries.filter(item => item !== currentFilename)];
 
-  const items = entries.map(item => {
-    pathPrefix = getPathPrefix(item);
-    const fileName = vscode.workspace.asRelativePath(item);
-    return {
-      url: Uri.file(item),
-      rootPath: maybeWorkspaceFolder,
-      label: determineLabelType(item, pathPrefix),
-      description: fileName
-    };
-  });
+  const items = entries.map(generateQuickPickItem);
 
   const placeholderText =
     items.length > 0
@@ -252,7 +222,7 @@ function showRelated() {
 
 function activate(context) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("jumpBetweenRelatedFiles.show", showRelated)
+    vscode.commands.registerCommand("fileHopper.show", showRelated)
   );
 }
 
