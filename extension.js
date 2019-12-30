@@ -14,13 +14,13 @@ const {
   appRootFolders,
   appSubRootFolders,
   appSubFolders,
-  testsSubFolders,
+  testSubFolders,
   testSubRootFolders,
   testRootFolders
 } = getConfig();
 
 const appSubFolderRegexString = getPipedRegexString(appSubFolders);
-const testSubFolderRegexString = getPipedRegexString(testsSubFolders);
+const testSubFolderRegexString = getPipedRegexString(testSubFolders);
 
 function open(item) {
   workspace
@@ -116,8 +116,10 @@ function showRelated() {
   // Construct the regex for app sub directories
   const appSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
     appSubRootFolders
-  )}(\/.*)?\/${appSubFolderRegexString}(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss)`;
-  const appTestSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(testSubRootFolders)}(\/.*)?\/${testSubFolderRegexString}(\/${appSubFolderRegexString})?(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss)`;
+  )}(\/.*)?\/${appSubFolderRegexString}(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss|css)`;
+  const appTestSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
+    testSubRootFolders
+  )}(\/.*)?\/${testSubFolderRegexString}(\/${appSubFolderRegexString})?(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss|css)`;
 
   let parentSubDir;
   let appPrefixNameMatch1 = currentFilename.match(appSubDirRegex);
@@ -143,7 +145,9 @@ function showRelated() {
     // We need to make sure that the pathPrefix is only the top level project and not an
     // engine/addon inside of the app.
     if (folderRegexMatch) {
-      const rootLevelFolders = [...new Set([].concat(appRootFolders, testRootFolders))];
+      const rootLevelFolders = [
+        ...new Set([].concat(appRootFolders, testRootFolders))
+      ];
       const rootLevelPrefixRegexString = rootLevelFolders.includes(
         folderRegexMatch[2]
       )
@@ -157,12 +161,6 @@ function showRelated() {
     pathPrefix = potentialPrefix
       ? potentialPrefix
       : vscode.workspace.asRelativePath(path.dirname(currentFilename));
-
-    const prefixRegex = new RegExp(`(_)?(.*)`);
-    const prefixRegexMatch = prefix.match(prefixRegex);
-    if (prefixRegexMatch) {
-      prefix = prefixRegexMatch[2];
-    }
   }
 
   // this is to match .scss files for patterns where css file names
@@ -185,7 +183,8 @@ function showRelated() {
   try {
     entries = fg.sync(
       [
-        `${globPrefix}?(_)?(${potentialParentFolderName}-)${prefix}?(-test).{js,hbs,scss}`
+        `${globPrefix}?(_)?(${potentialParentFolderName}-)${prefix}?(-test).{js,hbs,scss,css,html}`,
+        `${maybeWorkspaceFolder}/${pathPrefix}/${prefix}?(-test).{js,hbs,scss,css,html}`
       ],
       { dot: true, ignore: ["**/node_modules"] }
     );
