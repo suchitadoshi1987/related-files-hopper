@@ -1,0 +1,157 @@
+{
+  "name": "related-files-hopper",
+  "displayName": "Related Files Hopper",
+  "description": "Get easy access to all the related files in your app",
+  "version": "0.0.5",
+  "preview": true,
+  "publisher": "suchitadoshi1987",
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "engines": {
+    "vscode": "^1.30.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suchitadoshi1987/related-files-hopper.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "related",
+    "files",
+    "jump",
+    "similar",
+    "find",
+    "hop",
+    "navigate",
+    "open"
+  ],
+  "activationEvents": [
+    "onCommand:fileHopper.show"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "related-files-hopper configuration",
+      "properties": {
+        "fileHopper.labelRuleSets": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "required": [
+              "folderName",
+              "title",
+              "regexPatterns"
+            ],
+            "properties": {
+              "folderName": {
+                "type": "string",
+                "description": "Specifies the name of the folder/subfolder."
+              },
+              "title": {
+                "type": "string",
+                "description": "Specifies the label title."
+              },
+              "regexPattern": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Specifies the regular expression pattern."
+              }
+            }
+          }
+        },
+        "fileHopper.appRootFolders": {
+          "type": "array",
+          "default": [
+            "app"
+          ]
+        },
+        "fileHopper.appSubRootFolders": {
+          "type": "array",
+          "default": [
+            "addon",
+            "app"
+          ]
+        },
+        "fileHopper.appSubFolders": {
+          "type": "array",
+          "default": [
+            "controllers",
+            "routes",
+            "a11y",
+            "templates",
+            "components",
+            "models",
+            "utils",
+            "serializers",
+            "adapters"
+          ]
+        },
+        "fileHopper.testSubRootFolders": {
+          "type": "array",
+          "default": [
+            "tests"
+          ]
+        },
+        "fileHopper.testRootFolders": {
+          "type": "array",
+          "default": [
+            "tests"
+          ]
+        },
+        "fileHopper.testsSubFolders": {
+          "type": "array",
+          "default": [
+            "acceptance",
+            "integration",
+            "unit"
+          ]
+        },
+        "fileHopper.patternsToStrip": {
+          "type": "array",
+          "default": [
+            "{EXTENSION}",
+            "/[_\\.]?-[tT]est$/"
+          ],
+          "description": "Regular expressions or strings to remove from the path"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "fileHopper.show",
+        "title": "Quick Open Related Files"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "fileHopper.show",
+        "key": "ctrl+/",
+        "mac": "cmd+shift+.",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.30.0",
+    "eslint": "^6.6.0",
+    "glob": "^7.1.5",
+    "mocha": "^6.2.2",
+    "typescript": "^3.6.4",
+    "vscode-test": "^1.2.2"
+  },
+  "dependencies": {
+    "fast-glob": "^3.1.1"
+  }
+}
