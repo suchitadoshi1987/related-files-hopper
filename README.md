@@ -32,8 +32,7 @@ Use `Cmd+Shift+.` to get the list of all the related files in regards to your cu
 
 | Name               | Description                                                                        | Structure                                                                                 |
 |--------------------|------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| labelRuleSets      | Custom rule set to generate labels based on folder name and regex strings          | <pre lang="json" style="width: 400px">{<br>  "folderName": "styles",<br>  "title": "Style",<br>  "regexPatterns": ["(/.*)?/(.+).(css\|scss)"]<br>}</pre> 
-|
+| labelRuleSets      | Custom rule set to generate labels based on folder name and regex strings          | <pre lang="json">[{<br>  "folderName": "styles",<br>  "title": "Style",<br>  "regexPatterns": ["(/.*)?/(.+).(css\|scss)"]<br>}]</pre> |
 | appRootFolders     | Array of the root folders of the app                                               | array of strings                                                                          |
 | appSubRootFolders  | Array of any sub root folders of the app (app within app support)                  | array of strings                                                                          |
 | appSubFolders      | Array of directories in the app eg: ['components', 'templates', 'styles']          | array of strings                                                                          |
