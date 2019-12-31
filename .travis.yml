@@ -20,4 +20,7 @@ install:
   - yarn install
 
 script:
-  - yarn test --silent
+  - yarn test
+
+after_success:
+  - yarn coveralls
