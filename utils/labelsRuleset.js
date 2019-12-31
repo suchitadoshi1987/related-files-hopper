@@ -4,36 +4,51 @@ function _capitalizeFirstLetter(str) {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-function createDefaultAppLabels(folders) {
-  const stylesItem = {
+/**
+ * Returns an array of default label rule set for the quick pick item based on the folders array
+ * along with some custom rulesets.
+ * @param {*} folders
+ */
+function createDefaultAppLabelRuleSet(folders) {
+  const stylesRuleSet = {
     folderName: "styles",
     title: "Style",
     regexPatterns: ["(/.*)?/(.+).(css|scss)"]
   };
-  const templatesItem = {
+  const templatesRuleSet = {
     folderName: "templates",
     title: "Template",
     regexPatterns: ["(/.*)?/(.+).(hbs)", "(/.*)?/templates/(.+).(js|ts|hbs)"]
   };
-  const rootItem = {
+  const rootRuleSet = {
     folderName: "",
     title: "Root",
     regexPatterns: ["(.+).(js|ts|hbs)"]
   };
 
-  let result = folders.map(folderItem => {
+  let appRuleSets = folders.map(folderItem => {
     return {
       folderName: folderItem,
       title: _capitalizeFirstLetter(singular(folderItem)),
       regexPatterns: [`(/.*)?/${folderItem}/(.+).(js|ts)`]
     };
   });
-  result = result.concat([stylesItem, templatesItem, rootItem]);
-  return result;
+  appRuleSets = [].concat(
+    stylesRuleSet,
+    templatesRuleSet,
+    ...appRuleSets,
+    rootRuleSet
+  );
+  return appRuleSets;
 }
 
-function createDefaultTestLabels(folders) {
-  const result = folders.map(folderItem => {
+/**
+ * Returns an array of default label rule set for the quick pick item based
+ * on the test folders array.
+ * @param {*} testFolders
+ */
+function createDefaultTestLabelRuleSet(testFolders) {
+  return testFolders.map(folderItem => {
     return {
       folderName: folderItem,
       title: `${_capitalizeFirstLetter(singular(folderItem))} Test`,
@@ -42,6 +57,8 @@ function createDefaultTestLabels(folders) {
       ]
     };
   });
-  return result;
 }
-module.exports = { createDefaultAppLabels, createDefaultTestLabels };
+module.exports = {
+  createDefaultAppLabelRuleSet,
+  createDefaultTestLabelRuleSet
+};

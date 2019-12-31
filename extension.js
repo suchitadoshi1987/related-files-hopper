@@ -112,6 +112,7 @@ function showRelated() {
   const start = process.hrtime(); // start
 
   let potentialParentFolderName = "";
+  let parentSubDir;
 
   // Construct the regex for app sub directories
   const appSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
@@ -121,15 +122,14 @@ function showRelated() {
     testSubRootFolders
   )}(\/.*)?\/${testSubFolderRegexString}(\/${appSubFolderRegexString})?(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss|css)`;
 
-  let parentSubDir;
-  let appPrefixNameMatch1 = currentFilename.match(appSubDirRegex);
-  let appPrefixNameMatch2 = currentFilename.match(appTestSubDirRegex);
+  let appSubDirMatch = currentFilename.match(appSubDirRegex);
+  let testSubDirMatch = currentFilename.match(appTestSubDirRegex);
 
   let childSubDir =
-    getChildSubDir(appPrefixNameMatch1, appPrefixNameMatch2) ||
+    getChildSubDir(appSubDirMatch, testSubDirMatch) ||
     `(${appSubFolderRegexString}|${testSubFolderRegexString})`;
 
-  let folderRegexMatch = appPrefixNameMatch1 || appPrefixNameMatch2;
+  let folderRegexMatch = appSubDirMatch || testSubDirMatch;
   if (folderRegexMatch) {
     parentSubDir = removePrefixSlash(folderRegexMatch[1]);
     pathPrefix = folderRegexMatch[2];

@@ -143,13 +143,15 @@
     ]
   },
   "scripts": {
-    "test": "node ./test/runTest.js"
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "test": "node ./test/runTest.js --coverage --collectCoverageFrom=./utils/**/*.js"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.11.7",
     "@types/vscode": "^1.30.0",
+    "coveralls": "^3.0.9",
     "eslint": "^6.6.0",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
