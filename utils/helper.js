@@ -16,7 +16,8 @@ function getConfig() {
 }
 
 function getPipedRegexString(...arr) {
-  return arr.length ? `(${[].concat(...arr).join("|")})` : "";
+  const mergedArray = [].concat(...arr);
+  return mergedArray.length ? `(${mergedArray.join("|")})` : "";
 }
 
 function removePrefixSlash(pathName) {

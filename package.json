@@ -2,7 +2,7 @@
   "name": "file-hopper",
   "displayName": "Related Files Hopper",
   "description": "Get easy access to all the related files in your app",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "publisher": "suchitadoshi1987",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -115,6 +115,25 @@
             "integration",
             "unit"
           ]
+        },
+        "fileHopper.testFilePattern": {
+          "type": "string",
+          "default": "-test"
+        },
+        "fileHopper.supportedExtensions": {
+          "type": "array",
+          "default": [
+            "js",
+            "ts",
+            "html",
+            "hbs",
+            "css",
+            "scss"
+          ]
+        },
+        "fileHopper.customGlobPatterns": {
+          "type": "array",
+          "description": "Add custom glob patterns for your app %FILE_NAME% wild card will be replaced with the current file name and %FILE_EXT% will be replaced with the supportedExtensions from config"
         },
         "fileHopper.patternsToStrip": {
           "type": "array",

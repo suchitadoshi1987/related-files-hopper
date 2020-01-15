@@ -16,7 +16,9 @@ const {
   appSubFolders,
   testSubFolders,
   testSubRootFolders,
-  testRootFolders
+  testRootFolders,
+  testFilePattern,
+  customGlobPatterns
 } = getConfig();
 
 const appSubFolderRegexString = getPipedRegexString(appSubFolders);
@@ -113,14 +115,27 @@ function showRelated() {
 
   let potentialParentFolderName = "";
   let parentSubDir;
+  let pipedSupportedExtensions = getPipedRegexString(
+    getConfig().supportedExtensions
+  );
+
+  const appRegexString = appSubFolderRegexString
+    ? `\/${appSubFolderRegexString}`
+    : "(/.*)?";
+
+  const testRegexString = testSubFolderRegexString
+    ? `\/${testSubFolderRegexString}`
+    : "(/.*)?";
 
   // Construct the regex for app sub directories
   const appSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
     appSubRootFolders
-  )}(\/.*)?\/${appSubFolderRegexString}(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss|css)`;
+  )}(\/.*)?${appRegexString}(\/.*)?\/(_)?${prefix}(${testFilePattern})?.${pipedSupportedExtensions}`;
+  
+  // Construct the regex for test sub directories
   const appTestSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
     testSubRootFolders
-  )}(\/.*)?\/${testSubFolderRegexString}(\/${appSubFolderRegexString})?(\/.*)?\/(_)?${prefix}(-test)?.(js|hbs|scss|css)`;
+  )}(\/.*)?${testRegexString}(\/${appSubFolderRegexString})?(\/.*)?\/(_)?${prefix}(${testFilePattern})?.${pipedSupportedExtensions}`;
 
   let appSubDirMatch = currentFilename.match(appSubDirRegex);
   let testSubDirMatch = currentFilename.match(appTestSubDirRegex);
@@ -179,15 +194,28 @@ function showRelated() {
     ? `${maybeWorkspaceFolder}/${pathPrefix}/**/${childSubDir}/`
     : `${maybeWorkspaceFolder}/${pathPrefix}/**/`;
 
+  let supportedExtensions = getConfig().supportedExtensions.join(",");
+  
+  // This is the stricter version which is very contextual and will give you fine grained
+  // results based nested level directories (default)
+  let defaultGlobPattern = [
+    `${globPrefix}?(_)?(${potentialParentFolderName}-)${prefix}?(${testFilePattern}).{${supportedExtensions}}`,
+    `${maybeWorkspaceFolder}/${pathPrefix}/${prefix}?(${testFilePattern}).{${supportedExtensions}}`
+  ];
+
+  // User can choose to provide their own set of glob patterns which will supercede the default
+  // option. The wild cards "%FILE_NAME%" and "%FILE_EXT%" will be replaced with the name of the
+  // current file and the supported extensions from the config.
+  const customGlobs = customGlobPatterns.map(item => {
+    item = item.replace("%FILE_NAME%", prefix);
+    item = item.replace("%FILE_EXT%", `{${supportedExtensions}}`);
+    return `${maybeWorkspaceFolder}/${item}`;
+  });
+  
+  const globPatterns = customGlobs.length ? customGlobs : defaultGlobPattern;
   // run the glob query
   try {
-    entries = fg.sync(
-      [
-        `${globPrefix}?(_)?(${potentialParentFolderName}-)${prefix}?(-test).{js,hbs,scss,css,html}`,
-        `${maybeWorkspaceFolder}/${pathPrefix}/${prefix}?(-test).{js,hbs,scss,css,html}`
-      ],
-      { dot: true, ignore: ["**/node_modules"] }
-    );
+    entries = fg.sync(globPatterns, { dot: true, ignore: ["**/node_modules"] });
   } catch (e) {
     entries = [currentFilename];
   }
