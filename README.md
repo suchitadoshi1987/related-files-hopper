@@ -32,18 +32,57 @@ This extension allows movement within a collection of related files with a singl
 
 Use `Cmd+Shift+.` to get the list of all the related files in regards to your current file.
 
+### Example of custom settings:
+
+For apps that doesn't really have files distributed across various folders, you can simply add your own `customGlobPatterns` + `labelRuleSets`:
+
+An Example of a very simple Angular app with a folder structure:
+- `src/app/foo.component.ts`
+- `src/app/foo.component.html`
+- `src/app/foo.component.css`
+- `src/app/foo.spec.ts`
+
+The `settings.json` would look something like:
+``` json
+"fileHopper.labelRuleSets": [
+    {
+      "folderName": "",
+      "title": "Test",
+      "regexPatterns": ["(.+).spec(.js|.ts)"]
+    },
+    {
+      "folderName": "",
+      "title": "Component",
+      "regexPatterns": ["(.+).component(.js|.ts)"]
+    },
+    {
+      "folderName": "",
+      "title": "Component Template",
+      "regexPatterns": ["(.+).component.html"]
+    },
+    {
+      "folderName": "",
+      "title": "Component Style",
+      "regexPatterns": ["(.+).component.css"]
+    },
+  ],
+  "fileHopper.customGlobPatterns": [
+    "**/%FILE_NAME%.?({component|spec}).%FILE_EXT%",
+  ],
+  ```
+
 <h3 id="customizations">Customizations</h3>
 
 | Name                | Description                                                                                                                                                                      | Structure                                                                                                                          |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | labelRuleSets       | Custom rule set to generate labels based on folder name and regex strings                                                                                                        | [{<br/> "folderName": "styles",<br/> "title": "Style",<br/> "regexPatterns": ["(/.*)?/(.+).(css\|scss)"]<br>}] |
+| customGlobPatterns  | Custom glob patterns for your app `%FILE_NAME%` wild card will be replaced with the current file name and `%FILE_EXT%` will be replaced with the supportedExtensions from config | array of globPatterns. eg: <br/>`[`<br/> `"**/%FILE_NAME%.%FILE_EXT%",`<br/> `"**/tests/%FILE_NAME%-test.{js,ts}"`<br/>`]`                                    |
 | appRootFolders      | Array of the root folders of the app                                                                                                                                             | array of strings                                                                                                                   |
 | appSubRootFolders   | Array of any sub root folders of the app (app within app support)                                                                                                                | array of strings                                                                                                                   |
 | appSubFolders       | Array of directories in the app eg: ['components', 'templates', 'styles']                                                                                                        | array of strings                                                                                                                   |
 | testRootFolders     | Array of the root folders of the tests in the app                                                                                                                                | array of strings                                                                                                                   |
 | testSubRootFolders  | Array of any sub root folders of tests in the app (app within app support)                                                                                                       | array of strings                                                                                                                   |
 | testSubFolders      | Array of directories of tests in the app eg: ['unit', 'acceptance', 'integration']                                                                                               | array of strings                                                                                                                   |
-| customGlobPatterns  | Custom glob patterns for your app `%FILE_NAME%` wild card will be replaced with the current file name and `%FILE_EXT%` will be replaced with the supportedExtensions from config | array of globPatterns. eg: <br/>`[`<br/> `"**/%FILE_NAME%.%FILE_EXT%",`<br/> `"**/tests/%FILE_NAME%-test.{js,ts}"`<br/>`]`                                    |
 | testFilePattern     | Customize the test file convention.                                                                                                                                              | string. eg: `"test-"` OR `".test"` etc                                                                                             |  |
 | supportedExtensions | Array of extensions in the app                                                                                                                                                   | array of strings. eg: `[js, ts, css, html]`                                                                                        |
 | patternsToStrip     | Regular expressions or strings to remove from the path                                                                                                                           | array of strings                                                                                                                   |
