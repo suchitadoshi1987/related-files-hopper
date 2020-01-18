@@ -87,6 +87,7 @@ function showRelated() {
   let prefix;
   let maybeWorkspaceFolder;
   let currentFilename;
+  let actualFileName;
   if (document) {
     currentFilename = document.fileName;
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
@@ -100,6 +101,7 @@ function showRelated() {
       separator,
       config
     );
+    actualFileName = prefix;
   } else {
     prefix = "";
   }
@@ -131,7 +133,7 @@ function showRelated() {
   const appSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
     appSubRootFolders
   )}(\/.*)?${appRegexString}(\/.*)?\/(_)?${prefix}(${testFilePattern})?.${pipedSupportedExtensions}`;
-  
+
   // Construct the regex for test sub directories
   const appTestSubDirRegex = `${maybeWorkspaceFolder}(\/.*)?/${getPipedRegexString(
     testSubRootFolders
@@ -195,7 +197,7 @@ function showRelated() {
     : `${maybeWorkspaceFolder}/${pathPrefix}/**/`;
 
   let supportedExtensions = getConfig().supportedExtensions.join(",");
-  
+
   // This is the stricter version which is very contextual and will give you fine grained
   // results based nested level directories (default)
   let defaultGlobPattern = [
@@ -207,7 +209,7 @@ function showRelated() {
   // option. The wild cards "%FILE_NAME%" and "%FILE_EXT%" will be replaced with the name of the
   // current file and the supported extensions from the config.
   const customGlobs = customGlobPatterns.map(item => {
-    item = item.replace("%FILE_NAME%", prefix);
+    item = item.replace("%FILE_NAME%", actualFileName);
     item = item.replace("%FILE_EXT%", `{${supportedExtensions}}`);
     return `${maybeWorkspaceFolder}/${item}`;
   });
