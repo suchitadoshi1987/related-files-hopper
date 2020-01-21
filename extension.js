@@ -91,7 +91,7 @@ function showRelated() {
   if (document) {
     currentFilename = document.fileName;
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-    maybeWorkspaceFolder = workspaceFolder ? removePrefixSlash (workspaceFolder.uri.path) : "";
+    maybeWorkspaceFolder = workspaceFolder ? removePrefixSlash(workspaceFolder.uri.path) : "";
     const separator = path.sep;
     const config = vscode.workspace.getConfiguration("fileHopper");
 
