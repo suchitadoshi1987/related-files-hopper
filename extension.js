@@ -223,7 +223,7 @@ function showRelated() {
   }
 
   // move the current file to the top
-  entries = [...entries.filter(item => item !== currentFilename)];
+  entries = [...entries.filter(item => item !== removePrefixSlash(currentFilename))];
 
   const items = entries.map(generateQuickPickItem);
 
