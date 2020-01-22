@@ -91,7 +91,7 @@ function showRelated() {
   if (document) {
     currentFilename = document.fileName;
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-    maybeWorkspaceFolder = workspaceFolder ? workspaceFolder.uri.path : "";
+    maybeWorkspaceFolder = workspaceFolder ? removePrefixSlash(workspaceFolder.uri.path) : "";
     const separator = path.sep;
     const config = vscode.workspace.getConfiguration("fileHopper");
 
@@ -213,7 +213,7 @@ function showRelated() {
     item = item.replace("%FILE_EXT%", `{${supportedExtensions}}`);
     return `${maybeWorkspaceFolder}/${item}`;
   });
-  
+
   const globPatterns = customGlobs.length ? customGlobs : defaultGlobPattern;
   // run the glob query
   try {
@@ -223,7 +223,7 @@ function showRelated() {
   }
 
   // move the current file to the top
-  entries = [...entries.filter(item => item !== currentFilename)];
+  entries = [...entries.filter(item => item !== removePrefixSlash(currentFilename))];
 
   const items = entries.map(generateQuickPickItem);
 
