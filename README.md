@@ -30,7 +30,7 @@ This extension allows movement within a collection of related files with a singl
 
 ## Usage
 
-Use `Cmd+Shift+.` to get the list of all the related files in regards to your current file.
+Use `Cmd+Shift+.` Mac users and `Ctrl+/` for Windows users to get the list of all the related files in regards to your current file.
 
 ### Example of custom settings:
 
@@ -77,6 +77,7 @@ The `settings.json` would look something like:
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | labelRuleSets       | Custom rule set to generate labels based on folder name and regex strings                                                                                                        | [{<br/> "folderName": "styles",<br/> "title": "Style",<br/> "regexPatterns": ["(/.*)?/(.+).(css\|scss)"]<br>}] |
 | customGlobPatterns  | Custom glob patterns for your app `%FILE_NAME%` wild card will be replaced with the current file name and `%FILE_EXT%` will be replaced with the supportedExtensions from config | array of globPatterns. eg: <br/>`[`<br/> `"**/%FILE_NAME%.%FILE_EXT%",`<br/> `"**/tests/%FILE_NAME%-test.{js,ts}"`<br/>`]`                                    |
+| ignorePatterns      | Array of glob patterns that should be ignored by the searcher                                                                                                                                            | array of globPatterns. eg: ["**/nodemodules"]                                                                                                                   |
 | appRootFolders      | Array of the root folders of the app                                                                                                                                             | array of strings                                                                                                                   |
 | appSubRootFolders   | Array of any sub root folders of the app (app within app support)                                                                                                                | array of strings                                                                                                                   |
 | appSubFolders       | Array of directories in the app eg: ['components', 'templates', 'styles']                                                                                                        | array of strings                                                                                                                   |

@@ -18,7 +18,8 @@ const {
   testSubRootFolders,
   testRootFolders,
   testFilePattern,
-  customGlobPatterns
+  customGlobPatterns,
+  ignorePatterns
 } = getConfig();
 
 const appSubFolderRegexString = getPipedRegexString(appSubFolders);
@@ -217,7 +218,7 @@ function showRelated() {
   const globPatterns = customGlobs.length ? customGlobs : defaultGlobPattern;
   // run the glob query
   try {
-    entries = fg.sync(globPatterns, { dot: true, ignore: ["**/node_modules"] });
+    entries = fg.sync(globPatterns, { dot: true, ignore: ignorePatterns });
   } catch (e) {
     entries = [currentFilename];
   }

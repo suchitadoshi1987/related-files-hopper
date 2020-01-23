@@ -132,6 +132,11 @@
             "scss"
           ]
         },
+        "fileHopper.ignorePatterns": {
+          "type": "array",
+          "description": "An array of glob patterns that needs to be ignored",
+          "default": ["**/node_modules"]
+        },
         "fileHopper.customGlobPatterns": {
           "type": "array",
           "description": "Add custom glob patterns for your app %FILE_NAME% wild card will be replaced with the current file name and %FILE_EXT% will be replaced with the supportedExtensions from config"
