@@ -22,6 +22,8 @@ const {
   ignorePatterns
 } = getConfig();
 
+const isWindows = process.platform === 'win32';
+
 const appSubFolderRegexString = getPipedRegexString(appSubFolders);
 const testSubFolderRegexString = getPipedRegexString(testSubFolders);
 
@@ -81,6 +83,10 @@ function buildPrefix(currentFilename, workspaceFolder, separator, config) {
   return currentFilename;
 }
 
+function getCurrentWorkspaceFolder(uriPath) {
+  return isWindows ? removePrefixSlash(uriPath) : uriPath; 
+} 
+
 function showRelated() {
   const document =
     vscode.window.activeTextEditor && vscode.window.activeTextEditor.document;
@@ -92,7 +98,7 @@ function showRelated() {
   if (document) {
     currentFilename = document.fileName;
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-    maybeWorkspaceFolder = workspaceFolder ? removePrefixSlash(workspaceFolder.uri.path) : "";
+    maybeWorkspaceFolder = workspaceFolder ?  getCurrentWorkspaceFolder(workspaceFolder.uri.path) : "";
     const separator = path.sep;
     const config = vscode.workspace.getConfiguration("fileHopper");
 
@@ -223,8 +229,9 @@ function showRelated() {
     entries = [currentFilename];
   }
 
+  const currentFileNameEntry = isWindows ? removePrefixSlash(currentFilename) : currentFilename;
   // move the current file to the top
-  entries = [...entries.filter(item => item !== removePrefixSlash(currentFilename))];
+  entries = [...entries.filter(item => item !== currentFileNameEntry)];
 
   const items = entries.map(generateQuickPickItem);
 
