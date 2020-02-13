@@ -7,6 +7,11 @@ os:
 cache:
   yarn: true  
 
+addons:
+  apt:
+    packages:
+      - libsecret-1-dev
+
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
