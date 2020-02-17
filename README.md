@@ -2,7 +2,7 @@
 [![](https://vsmarketplacebadge.apphb.com/version-short/suchitadoshi1987.file-hopper.svg)](https://marketplace.visualstudio.com/items?itemName=suchitadoshi1987.file-hopper)
 [![dependencies Status](https://david-dm.org/suchitadoshi1987/related-files-hopper/status.svg)](https://david-dm.org/suchitadoshi1987/related-files-hopper)
 [![devDependencies Status](https://david-dm.org/suchitadoshi1987/related-files-hopper/dev-status.svg)](https://david-dm.org/suchitadoshi1987/related-files-hopper?type=dev)
-[![Discord Chat](https://img.shields.io/discord/678460795503247360.svg?color=blue&label=discord%20chat)](https://discord.gg/deCJQR)
+[![Discord Chat](https://img.shields.io/discord/678460795503247360.svg?color=blue&label=discord%20chat)](https://discord.gg/4ygXMng)
 
 # Related Files Hopper
 
