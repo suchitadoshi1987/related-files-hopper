@@ -177,7 +177,7 @@
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.1",
     "@types/vscode": "^1.30.0",
-    "coveralls": "^3.0.9",
+    "coveralls": "^3.0.11",
     "eslint": "^6.6.0",
     "glob": "^7.1.5",
     "mocha": "^7.0.1",
