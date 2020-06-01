@@ -1684,10 +1684,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vscode-test@^1.2.2:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/vscode-test/-/vscode-test-1.2.3.tgz#b7be4e0b6113be425993efdf0a46a70b15a65a7e"
-  integrity sha512-mKRTNso33NaUULiPBFg6zRjyntjcCpIgkrogyPQuKlvoQREQR8jLKN5UD4L5rkTSD+oBhcKtaLR2/g34FexURw==
+vscode-test@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/vscode-test/-/vscode-test-1.4.0.tgz#a56f73c1667b4d37ba6baa6765f233a19d4ffbfe"
+  integrity sha512-Jt7HNGvSE0+++Tvtq5wc4hiXLIr2OjDShz/gbAfM/mahQpy4rKBnmOK33D+MR67ATWviQhl+vpmU3p/qwSH/Pg==
   dependencies:
     http-proxy-agent "^2.1.0"
     https-proxy-agent "^2.2.4"
