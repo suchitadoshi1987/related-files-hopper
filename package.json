@@ -182,7 +182,7 @@
     "glob": "^7.1.5",
     "mocha": "^7.0.1",
     "typescript": "^3.6.4",
-    "vscode-test": "^1.2.2"
+    "vscode-test": "^1.4.1"
   },
   "dependencies": {
     "fast-glob": "^3.1.1",
