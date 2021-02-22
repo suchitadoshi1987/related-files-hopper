@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/suchitadoshi1987/related-files-hopper.svg?branch=master)](https://travis-ci.com/suchitadoshi1987/related-files-hopper)
+![](https://github.com/suchitadoshi1987/related-files-hopper/actions/workflows/node.js.yml/badge.svg)
 [![](https://vsmarketplacebadge.apphb.com/version-short/suchitadoshi1987.file-hopper.svg)](https://marketplace.visualstudio.com/items?itemName=suchitadoshi1987.file-hopper)
 [![dependencies Status](https://david-dm.org/suchitadoshi1987/related-files-hopper/status.svg)](https://david-dm.org/suchitadoshi1987/related-files-hopper)
 [![devDependencies Status](https://david-dm.org/suchitadoshi1987/related-files-hopper/dev-status.svg)](https://david-dm.org/suchitadoshi1987/related-files-hopper?type=dev)
