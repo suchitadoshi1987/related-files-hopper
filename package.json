@@ -185,7 +185,7 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "fast-glob": "^3.1.1",
+    "fast-glob": "^3.2.5",
     "pluralize": "^8.0.0"
   }
 }
