@@ -235,14 +235,11 @@ function showRelated() {
 
   const items = entries.map(generateQuickPickItem);
 
-  const placeholderText =
-    items.length > 0
-      ? `Related files to ${vscode.workspace.asRelativePath(
+  if (items.length) {
+    const placeholderText = `Related files to ${vscode.workspace.asRelativePath(
           currentFilename
-        )} starting with most relevant`
-      : `No Related Files found for ${vscode.workspace.asRelativePath(
-          currentFilename
-        )}`;
+    )} starting with most relevant`;
+
   window
     .showQuickPick(items, {
       placeHolder: placeholderText,
@@ -253,6 +250,15 @@ function showRelated() {
         open(item);
       }
     });
+  } else {
+    const input = window.createQuickPick();
+    input.placeholder = "No related files found. Type to search all files.";
+    input.show();
+    input.onDidChangeValue(v => {
+      input.hide();
+      vscode.commands.executeCommand("workbench.action.quickOpen", v);
+    });
+  }
 
   console.log(toMs(process.hrtime(start)).toFixed(2) + " ms");
 }
