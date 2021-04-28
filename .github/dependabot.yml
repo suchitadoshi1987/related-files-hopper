@@ -1,0 +1,51 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: eslint
+    versions:
+    - 7.18.0
+    - 7.19.0
+    - 7.20.0
+    - 7.21.0
+    - 7.22.0
+    - 7.23.0
+    - 7.24.0
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.22
+    - 14.14.25
+    - 14.14.31
+    - 14.14.32
+    - 14.14.34
+    - 14.14.35
+    - 14.14.37
+  - dependency-name: typescript
+    versions:
+    - 4.1.3
+    - 4.2.2
+    - 4.2.3
+  - dependency-name: "@types/mocha"
+    versions:
+    - 8.2.1
+  - dependency-name: vscode-test
+    versions:
+    - 1.4.1
+    - 1.5.0
+    - 1.5.1
+  - dependency-name: "@types/vscode"
+    versions:
+    - 1.52.0
+    - 1.53.0
+    - 1.54.0
+  - dependency-name: mocha
+    versions:
+    - 8.2.1
+    - 8.3.0
+  - dependency-name: acorn
+    versions:
+    - 7.4.1
