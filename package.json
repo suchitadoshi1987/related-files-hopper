@@ -94,7 +94,8 @@
             "mixins",
             "utils",
             "serializers",
-            "adapters"
+            "adapters",
+            "modifiers"
           ]
         },
         "fileHopper.testSubRootFolders": {
