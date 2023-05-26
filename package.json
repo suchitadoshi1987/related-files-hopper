@@ -127,6 +127,8 @@
           "default": [
             "js",
             "ts",
+            "gjs",
+            "gts",
             "html",
             "hbs",
             "css",
